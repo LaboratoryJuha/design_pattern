@@ -6,7 +6,6 @@
 #include <string.h>
 #include <pthread.h>
 
-
 #define SHAPE_API(_expend_) \
     _expend_(CIRCLE) \
     _expend_(RECTANGLE)
@@ -16,7 +15,7 @@
 
 enum ShapeType {
     SHAPE_API(CREATE_ENUM)
-    SHAPETYpeMAX
+    SHAPE_TYPE_MAX
 };
 
 // 제품 인터페이스: Shape

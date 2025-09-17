@@ -1,6 +1,15 @@
 #include "singleton.h"
 
+// 싱글톤을 위한 전역 변수
 static pthread_mutex_t singleton_mutex = PTHREAD_MUTEX_INITIALIZER;
+static Circle *c = NULL;
+static Rectangle *r = NULL;
+
+// 프로그램 종료 시 할당된 메모리 해제
+void free_shape() {
+    free(c);
+    free(r);
+}
 
 void Circle_draw(Shape *self) {
     Circle *c = (Circle*)self;
@@ -8,7 +17,7 @@ void Circle_draw(Shape *self) {
 }
 
 Shape* createCircle() {
-    static Circle *c = NULL;
+    // 이중 검사를 통한 싱글톤 구현
     pthread_mutex_lock(&singleton_mutex);
     if (!c) {
         c = malloc(sizeof(Circle));
@@ -30,7 +39,6 @@ void Rectangle_draw(Shape *self) {
 
 
 Shape* createRectangle() {
-    static Rectangle *r = NULL;
     pthread_mutex_lock(&singleton_mutex);
     if (!r) {
         r = malloc(sizeof(Rectangle));
@@ -65,13 +73,14 @@ ShapeFactory getFactory(const char *type) {
 int main() {
     ShapeFactory factory = getFactory("circle");
     if (!factory) return 1;
-
     Shape __attribute__((__cleanup__(free))) *shape = factory();
     shape->draw(shape);
 
     factory = getFactory("rect");
+    if (!factory) return 1;
     Shape __attribute__((__cleanup__(free))) *shape2 = factory();
     shape2->draw(shape2);
 
+    free_shape();
     return 0;
 }
