@@ -60,18 +60,18 @@ Shape* classic_create_rectangle(void) {
 int main(void) {
     // Modern 스타일 팩토리 사용
     const Abstract_factory *factory = &modern_factory;
-    Shape AUTO_FACTORY_FREE *shape = factory->create_circle();
+    Shape AUTO_FREE *shape = factory->create_circle();
     shape->draw(shape);
 
-    Shape AUTO_FACTORY_FREE *shape2 = factory->create_rectangle();
+    Shape AUTO_FREE *shape2 = factory->create_rectangle();
     shape2->draw(shape2);
 
     // Classic 스타일 팩토리 사용
     factory = &classic_factory;
-    Shape AUTO_FACTORY_FREE *shape3 = factory->create_circle();
+    Shape AUTO_FREE *shape3 = factory->create_circle();
     shape3->draw(shape3);
 
-    Shape AUTO_FACTORY_FREE *shape4 = factory->create_rectangle();
+    Shape AUTO_FREE *shape4 = factory->create_rectangle();
     shape4->draw(shape4);
 
     return 0;

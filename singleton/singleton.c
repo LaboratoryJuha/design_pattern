@@ -11,12 +11,12 @@ void free_shape() {
     free(r);
 }
 
-void Circle_draw(Shape *self) {
+void circle_draw(Shape *self) {
     Circle *c = (Circle*)self;
     printf("Draw Circle with radius=%d\n", c->radius);
 }
 
-Shape* createCircle() {
+Shape* create_circle() {
     // 이중 검사를 통한 싱글톤 구현
     pthread_mutex_lock(&singleton_mutex);
     if (!c) {
@@ -25,20 +25,20 @@ Shape* createCircle() {
             pthread_mutex_unlock(&singleton_mutex);
             return NULL;
         }
-        c->base.draw = Circle_draw;
+        c->base.draw = circle_draw;
         c->radius = 5;
     }
     pthread_mutex_unlock(&singleton_mutex);
     return (Shape*)c;
 }
 
-void Rectangle_draw(Shape *self) {
+void rectangle_draw(Shape *self) {
     Rectangle *r = (Rectangle*)self;
     printf("Draw Rectangle %dx%d\n", r->width, r->height);
 }
 
 
-Shape* createRectangle() {
+Shape* create_rectangle() {
     pthread_mutex_lock(&singleton_mutex);
     if (!r) {
         r = malloc(sizeof(Rectangle));
@@ -46,7 +46,7 @@ Shape* createRectangle() {
             pthread_mutex_unlock(&singleton_mutex);
             return NULL;
         }
-        r->base.draw = Rectangle_draw;
+        r->base.draw = rectangle_draw;
         r->width = 4;
         r->height = 3;
     }
@@ -54,31 +54,31 @@ Shape* createRectangle() {
     return (Shape *)r;
 }
 
-ShapeFactory getFactory(const char *type) {
+ShapeFactory get_factory(const char *type) {
     static const char *types[] = { SHAPE_API(CREATE_STRING) NULL };
     int idx = 0;
 
-    while (type[idx] != NULL \
-        && strcmp(type[idx], type) == 0) {
+    while (types[idx] != NULL \
+        && strcmp(types[idx], type) == 0) {
         idx++;
     }
 
     switch (idx) {
-        case CIRCLE: return createCircle;
-        case RECTANGLE: return createRectangle;
+        case CIRCLE: return create_circle;
+        case RECTANGLE: return create_rectangle;
         default: return NULL;
     }
 }
  
 int main() {
-    ShapeFactory factory = getFactory("circle");
+    ShapeFactory factory = get_factory("circle");
     if (!factory) return 1;
-    Shape __attribute__((__cleanup__(free))) *shape = factory();
+    Shape AUTO_FREE *shape = factory();
     shape->draw(shape);
 
-    factory = getFactory("rect");
+    factory = get_factory("rectangle");
     if (!factory) return 1;
-    Shape __attribute__((__cleanup__(free))) *shape2 = factory();
+    Shape AUTO_FREE *shape2 = factory();
     shape2->draw(shape2);
 
     free_shape();

@@ -15,7 +15,7 @@ static inline void auto_free(void *pp) {
         *p = NULL;
     }
 }
-#define AUTO_FACTORY_FREE __attribute__((__cleanup__(auto_free)))
+#define AUTO_FREE __attribute__((__cleanup__(auto_free)))
 
 // 제품 인터페이스: Shape
 typedef struct Shape {

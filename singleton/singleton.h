@@ -6,6 +6,15 @@
 #include <string.h>
 #include <pthread.h>
 
+static inline void auto_free(void *pp) {
+    void **p = (void**)pp;
+    if (p && *p) {
+        free(*p);
+        *p = NULL;
+    }
+}
+#define AUTO_FREE __attribute__((__cleanup__(auto_free)))
+
 #define SHAPE_API(_expend_) \
     _expend_(CIRCLE) \
     _expend_(RECTANGLE)
@@ -39,10 +48,10 @@ typedef struct {
 // 팩토리 함수 시그니처
 typedef Shape* (*ShapeFactory)(void);
 
-void Circle_draw(Shape *self);
-Shape* createCircle(void);
-void Rectangle_draw(Shape *self);
-Shape* createRectangle(void);
-ShapeFactory getFactory(const char *type);
+void circle_draw(Shape *self);
+Shape* create_circle(void);
+void rectangle_draw(Shape *self);
+Shape* create_rectangle(void);
+ShapeFactory get_factory(const char *type);
 
 #endif
