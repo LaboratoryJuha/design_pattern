@@ -46,5 +46,4 @@ void Rectangle_draw(Shape *self);
 Shape* createRectangle(void);
 ShapeFactory getFactory(const char *type);
 
-extern pthread_mutex_t singleton_mutex;
 #endif
