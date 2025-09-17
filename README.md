@@ -1,2 +1,8 @@
-# design_pattern
-디자인 패턴 연습
+# practice the design pattern by C
+## factory pattern
+
+## singleton pattern
+* singleton + factory
+
+## abstract pattern
+* factory + abstract pattern
