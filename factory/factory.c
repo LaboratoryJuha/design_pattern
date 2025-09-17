@@ -1,47 +1,9 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-
-#define SHAPE_API(_expend_) \
-    _expend_(CIRCLE) \
-    _expend_(RECTANGLE)
-
-#define CREATE_ENUM(name) name,
-#define CREATE_STRING(name) #name,
-
-enum ShapeType {
-    SHAPE_API(CREATE_ENUM)
-    SHAPE_TYPE_MAX
-};
-
-// 제품 인터페이스: Shape
-typedef struct Shape {
-    void (*draw)(struct Shape *self);
-} Shape;
-
-// 구체 제품 1: Circle
-typedef struct {
-    Shape base;
-    int radius;
-} Circle;
-
-// 구체 제품 2: Rectangle
-typedef struct {
-    Shape base;
-    int width;
-    int height;
-} Rectangle;
-
-// 팩토리 함수 시그니처
-typedef Shape* (*ShapeFactory)(void);
-
+#include "factory.h"
 
 void Circle_draw(Shape *self) {
     Circle *c = (Circle*)self;
     printf("Draw Circle with radius=%d\n", c->radius);
 }
-
 
 // 구체 팩토리 1: Circle 생성
 Shape* createCircle(void) {
@@ -55,12 +17,10 @@ Shape* createCircle(void) {
     return (Shape*)c;
 }
 
-//-----------------------------
 void Rectangle_draw(Shape *self) {
     Rectangle *r = (Rectangle*)self;
     printf("Draw Rectangle %dx%d\n", r->width, r->height);
 }
-
 
 // 구체 팩토리 2: Rectangle 생성
 Shape* createRectangle(void) {
@@ -95,15 +55,13 @@ ShapeFactory getFactory(const char *type) {
 int main(void) {
     ShapeFactory factory = getFactory("circle");
     if (!factory) return 1;
-
-    Shape *shape = factory();
+    Shape __attribute__((__cleanup__(free))) *shape = factory();
     shape->draw(shape);
-    free(shape);
 
     factory = getFactory("rect");
-    Shape *shape2 = factory();
+    if (!factory) return 1;
+    Shape __attribute__((__cleanup__(free))) *shape2 = factory();
     shape2->draw(shape2);
-    free(shape2);
 
     return 0;
 }
