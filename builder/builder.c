@@ -28,12 +28,15 @@ static Computer build(ComputerBuilder* builder) {
 
 ComputerBuilder create_computer_builder() {
 	ComputerBuilder builder;
+
 	memset(&builder.computer, 0, sizeof(Computer));
+
 	builder.set_cpu = set_cpu;
 	builder.set_gpu = set_gpu;
 	builder.set_ram = set_ram;
 	builder.set_ssd = set_ssd;
 	builder.build = build;
+
 	return builder;
 }
 

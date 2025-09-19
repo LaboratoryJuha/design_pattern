@@ -29,7 +29,8 @@ typedef struct {
 
 typedef struct {
     Shape base;
-    int width, height;
+    int width;
+    int height;
 } Rectangle;
 
 // 추상 팩토리 구조체
