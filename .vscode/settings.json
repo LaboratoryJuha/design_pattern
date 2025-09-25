@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "*.sc": "c",
+        "*.p": "c",
+        "typeinfo": "c",
+        "builder.h": "c"
+    }
+}

@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "*.sc": "c",
+        "*.p": "c",
+        "types.h": "c",
+        "stdlib.h": "c"
+    }
+}
