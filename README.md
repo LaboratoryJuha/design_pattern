@@ -6,3 +6,7 @@
 
 ## abstract pattern
 * factory + abstract pattern
+
+## adapter
+## builder
+## strategy
